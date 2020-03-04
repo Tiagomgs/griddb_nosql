@@ -1,0 +1,45 @@
+map = {'S': [['A', 1], ['G', 12]],
+       'A': [['C', 1], ['B', 3]],
+       'B': [['A', 3], ['D', 3]],
+       'C': [['D', 1], ['G', 2]],
+       'D': [['B', 3], ['G', 3]]}
+
+tabel = {'S': 3, 'A': 2, 'B': 5, 'C': 1, 'D': 2, 'G': 0}
+
+cost = {'S': 0}
+
+def AStarSearch():
+    global map, tabela
+    closed = []
+    opened = [['S', 0]]
+
+    while True:
+        fn = [i[1] for i in opened]     
+        chosen_index = fn.index(min(fn))
+        node = opened[chosen_index][0]  
+        closed.append(opened[chosen_index])
+        del opened[chosen_index]
+        if closed[-1][0] == 'G':
+            break
+        for item in map[node]:
+            if item[0] in [closed_item[0] for closed_item in closed]:
+                continue
+            cost.update({item[0]: cost[node] + item[1]})
+            fn_node = cost[node] + tabela[item[0]] + item[1]
+            temp = [item[0], fn_node]
+            opened.append(temp)
+
+    trace_node = 'G'
+
+    for i in range(len(closed)-2, -1, -1):
+        check_node = closed[i][0]
+        if trace_node in [children[0] for children in map[check_node]]:
+            children_cost = [temp[1] for temp in map[check_node]]
+            children_nodes = [temp[0] for temp in map[check_node]]
+             
+    return closed, fn_node
+
+if __name__ == '__main__':
+    visited_nodes, fn_node = AStarSearch()
+    print('Path: ' + str(visited_nodes))
+    print('Total Cost: ' + str(fn_node)) 
